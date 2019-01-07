@@ -1,0 +1,9 @@
+{
+    "msg": "success",
+    "data": [
+        { "typeId": "1", "id": 1000, "name": "雪花", "price": "4", "count": "0", "imgUrl": "https://fuss10.elemecdn.com/2/2a/8788e51bfbfcc98181552eb702424jpeg.jpeg?imageMogr/format/webp/thumbnail/!140x140r/gravity/Center/crop/140x140/"},
+        { "typeId": "1", "id": 1001, "name": "青岛", "price": "6", "count": "0", "imgUrl": "https://fuss10.elemecdn.com/2/2a/8788e51bfbfcc98181552eb702424jpeg.jpeg?imageMogr/format/webp/thumbnail/!140x140r/gravity/Center/crop/140x140/"},
+        { "typeId": "1", "id": 1002, "name": "崂山", "price": "5", "count": "0", "imgUrl": "https://fuss10.elemecdn.com/2/2a/8788e51bfbfcc98181552eb702424jpeg.jpeg?imageMogr/format/webp/thumbnail/!140x140r/gravity/Center/crop/140x140/"},
+        { "typeId": "1", "id": 1003, "name": "纯生", "price": "8", "count": "0", "imgUrl": "https://fuss10.elemecdn.com/2/2a/8788e51bfbfcc98181552eb702424jpeg.jpeg?imageMogr/format/webp/thumbnail/!140x140r/gravity/Center/crop/140x140/"}
+    ]
+}

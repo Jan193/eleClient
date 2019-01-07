@@ -1,0 +1,8 @@
+{
+    "msg": "success",
+    "data": [
+        { "typeId":"1" , "name":"啤酒", "count": 0 },
+        { "typeId":"2" , "name":"炸鸡", "count": 0 },
+        { "typeId":"3" , "name":"汉堡", "count": 0 }
+    ]
+}
