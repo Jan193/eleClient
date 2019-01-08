@@ -16,10 +16,10 @@
 <template>
   <div class="good-list-box" style="flex: 1;" :class="isFixed ? 'good-list-fixed' : ''">
     <ul class="good-list">
-      <li class="good-item" v-for="(item, index) in goodList" :key="index">
-        <div class="good-item-img"><img :src="item.imgUrl" alt=""></div>
+      <li class="good-item" v-for="(item, index) in goodsList" :key="index">
+        <div class="good-item-img"><img :src="item.img" alt=""></div>
         <div class="good-item-info">
-          <p class="good-name">{{item.name}}</p>
+          <p class="good-name">{{item.iname}}</p>
           <p class="food-material">【5个一份】食材：小麦粉,猪肉</p>
           <p class="good-market">月售1879份</p>
           <p class="good-price">￥{{item.price}}</p>
@@ -37,10 +37,18 @@
 <script>
 
 export default {
-  props: ['isFixed'],
+  props: {
+    isFixed: {
+      type: Boolean
+    },
+    goodsList: {
+      type: Array,
+      default: []
+    }
+  },
   data () {
     return {
-      goodList: [],
+      // goodList: [],
       goodBuy: {
         number: 0
       },
@@ -53,17 +61,9 @@ export default {
   },
   mounted () {
     this.$nextTick(function () {
-      this.getGoodList()
     })
   },
   methods: {
-    getGoodList (id) {
-      this.http.get('../../../../../../static/json/goodList.json').then(res => {
-        this.goodList = res.data.data
-        // console.log(JSON.parse(res.data))
-        console.log(res.data)
-      })
-    },
     add (item) {
       item.count = Number(item.count) + 1
       this.$store.dispatch('add', item.typeId)

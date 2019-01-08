@@ -1,4 +1,8 @@
 import axios from 'axios'
+import Vue from 'vue'
+
+// axios.defaults.baseURL = 'http://127.0.0.1:7001'
+axios.defaults.baseURL = 'http://106.12.121.211:7001'
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 
@@ -11,6 +15,8 @@ axios.interceptors.request.use(config => {
 axios.interceptors.response.use(response => {
   return response
 }, error => Promise.reject(error))
+
+Vue.prototype.axios = axios
 
 // 封装
 // export function fetch (type, url, params = {}) {

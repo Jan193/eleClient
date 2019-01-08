@@ -28,17 +28,17 @@ export default new Router({
         {
           path: '/home',
           name: 'home',
-          component: Home
+          component: Home,
+          meta: { index: 0 }
         },
         {
           path: '/discover',
           name: '发现',
-          component: import('@/page/discover/discover')
+          component: import('@/page/discover/discover'),
+          meta: { index: 1 }
         },
-        // { path: '/order', name: '订单', component: Order },
-        { path: '/order', name: '订单', component: () => import(/* webpackChunkName: "order" */ '@/page/order/order') },
-        // { path: '/person', name: '我的', component: Person },
-        { path: '/person', name: '我的', component: () => import(/* webpackChunkName: "person" */'@/page/person/person') },
+        { path: '/order', name: '订单', component: () => import(/* webpackChunkName: "order" */ '@/page/order/order'), meta: { index: 2 } },
+        { path: '/person', name: '我的', component: () => import(/* webpackChunkName: "person" */ '@/page/person/person'), meta: { index: 3 } }
       ]
     },
     {

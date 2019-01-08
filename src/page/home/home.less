@@ -27,7 +27,8 @@
 }
 
 .swiper {
-    height: 5rem;
+  margin-bottom: .2rem;
+  height: 160px;
 }
 .swiper:after {
     content: "";
@@ -38,11 +39,17 @@
     width: 20%;
     text-align: center;
 }
+
 .mint-swipe-item {
     display: flex !important;
     flex-wrap: wrap;
     padding: 5px;
     box-sizing: border-box;
+    &::after {
+      content: "";
+      clear: both;
+      display: block;
+    }
 }
 .img-box {
     width: 12vw;
@@ -60,9 +67,6 @@
 }
 .mint-swipe-indicator.is-active {
     background-color: #333;
-}
-.swiper {
-  margin-bottom: .2rem;
 }
 .mint-swipe-indicators {
     bottom: 0;
@@ -159,6 +163,7 @@
   }
   .merchant-item-info {
     padding-left: .2rem;
+    flex: 1;
   }
   .shop-name {
     font-size: .3rem;

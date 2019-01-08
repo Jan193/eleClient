@@ -27,9 +27,9 @@
 <template>
   <div class="good-type" :class="isFixed ? 'good-type-fixed' : ''">
     <ul style="width: 2rem;">
-      <li class="good-type-item" :class="activeIndex === index ? 'good-item-active' : ''" style="text-align:center;padding: .2rem 0;" v-for="(item, index) in goodType" :key="item.id">
-        <span class="type-count" v-show="item.count > 0">{{item.count}}</span>
-        <span>{{item.name}}</span>
+      <li class="good-type-item" :class="activeIndex === index ? 'good-item-active' : ''" style="text-align:center;padding: .2rem 0;" v-for="(item, index) in goodsTypeList" :key="item.iid">
+        <!-- <span class="type-count" v-show="item.count > 0">{{item.count}}</span> -->
+        <span>{{item.iname}}</span>
       </li>
     </ul>
   </div>
@@ -38,7 +38,15 @@
 <script>
 
 export default {
-  props: ['isFixed'],
+  props: {
+    isFixed: {
+      type: Boolean
+    },
+    goodsTypeList: {
+      type: Array,
+      default: []
+    }
+  },
   data () {
     return {
       goodType: [],
@@ -54,22 +62,12 @@ export default {
     // }
   },
   created () {
-    this.getGoodType().then(res => {
-      this.$store.dispatch('saveGoodType', res)
-      this.goodType = this.$store.state.goodType
-    })
   },
   mounted () {
     this.$nextTick(function () {
     })
   },
   methods: {
-    async getGoodType () {
-      return this.http.get('../../../../../../static/json/goodType.json').then(res => {
-        console.log(res.data.data)
-        return res.data.data
-      })
-    }
   }
 }
 

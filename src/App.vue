@@ -1,45 +1,99 @@
 <style>
-  @import "./css/base.css";
-  @import "mint-ui/lib/style.css";
-  @import "./assets/font/iconfont.css";
-  :root {
-    --themeColorLeft: #00AAFF;
-    --themeColorRight: #0085FF;
-    --themeColor: #0098FF;
-  }
-  a,a:hover,a:active,a:visited,a:link,a:focus{
+@import "./css/base.css";
+@import "mint-ui/lib/style.css";
+@import "./assets/font/iconfont.css";
+:root {
+  --themeColorLeft: #00aaff;
+  --themeColorRight: #0085ff;
+  --themeColor: #0098ff;
+}
+a,
+a:hover,
+a:active,
+a:visited,
+a:link,
+a:focus {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 
-    -webkit-tap-highlight-color:rgba(0,0,0,0);
+  -webkit-tap-highlight-color: transparent;
 
-    -webkit-tap-highlight-color: transparent;
+  outline: none;
 
-    outline:none;
+  background: none;
 
-    background: none;
+  text-decoration: none;
+}
+#app {
+  overflow-x: hidden;
+}
 
-    text-decoration: none;
-
-  }
-  #app {
-    overflow-x: hidden;
-  }
+.slide-right-enter-active,
+.slide-right-leave-active,
+.slide-left-enter-active,
+.slide-left-leave-active {
+  will-change: transform;
+  transition: all 500ms;
+  position: absolute;
+}
+.slide-right-enter {
+  opacity: 0;
+  transform: translate3d(-100%, 0, 0);
+}
+.slide-right-leave-active {
+  opacity: 0;
+  transform: translate3d(100%, 0, 0);
+}
+.slide-left-enter {
+  opacity: 0;
+  transform: translate3d(100%, 0, 0);
+}
+.slide-left-leave-active {
+  opacity: 0;
+  transform: translate3d(-100%, 0, 0);
+}
 </style>
 <template>
   <div id="app">
-    <router-view/>
+    <!-- <v-touch v-on:swiperLeft="onSwiperLeft()"> -->
+    <transition :name="transitionName">
+      <router-view/>
+    </transition>
+    <!-- </v-touch> -->
   </div>
 </template>
 
 <script>
+import Vue from "vue";
+window.Vue = Vue;
+// import VueTouch from 'touch'
+// import Vue from 'vue'
+// Vue.use(VueTouch, { name: 'v-touch'})
+
+// import VueRouter from 'vue-router'
+// import VueRouterTransition from 'vue-router-transition'
+// Vue.use(VueRouter)
+// Vue.use(VueRouterTransition, VueRouter)
 
 export default {
-  name: 'App',
-  data () {
+  name: "App",
+  data() {
     return {
-      selected: 'tab1'
+      selected: "tab1",
+      transitionName: ""
+    };
+  },
+  watch: {
+    $route(to, from) {
+      //如果to索引大于from索引,判断为前进状态,反之则为后退状态
+      if (to.meta.index > from.meta.index) {
+        //设置动画名称
+        this.transitionName = "slide-left";
+      } else {
+        this.transitionName = "slide-right";
+      }
     }
   },
-  mounted () {
+  mounted() {
     /*
     ;(function (win, lib) {
       var doc = win.document
@@ -156,23 +210,29 @@ export default {
       }
     })(window, window['lib'] || (window['lib'] = {}))
     */
-    (function (doc, win) {
-      let docEl = doc.documentElement
-      let resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize'
-      let recalc = function () {
-        let clientWidth = docEl.clientWidth
-        if (!clientWidth) return
+    (function(doc, win) {
+      let docEl = doc.documentElement;
+      let resizeEvt =
+        "orientationchange" in window ? "orientationchange" : "resize";
+      let recalc = function() {
+        let clientWidth = docEl.clientWidth;
+        if (!clientWidth) return;
         if (clientWidth >= 750) {
-          docEl.style.fontSize = '100px'
+          docEl.style.fontSize = "100px";
         } else {
-          docEl.style.fontSize = 100 * (clientWidth / 750) + 'px'
+          docEl.style.fontSize = 100 * (clientWidth / 750) + "px";
         }
-      }
+      };
 
-      if (!doc.addEventListener) return
-      win.addEventListener(resizeEvt, recalc, false)
-      doc.addEventListener('DOMContentLoaded', recalc, false)
-    })(document, window)
+      if (!doc.addEventListener) return;
+      win.addEventListener(resizeEvt, recalc, false);
+      doc.addEventListener("DOMContentLoaded", recalc, false);
+    })(document, window);
+  },
+  methods: {
+    onSwiperLeft() {
+      console.log("什么鬼");
+    }
   }
-}
+};
 </script>

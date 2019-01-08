@@ -1,5 +1,11 @@
+
+
 <style lang='less'>
 @import "./home.less";
+.mint-swipe-items-wrap img {
+  width: 100%;
+  height: 100%;
+}
 </style>
 <template>
   <div class='home'>
@@ -15,17 +21,17 @@
       <article class="swiper">
         <mt-swipe :auto="0">
           <mt-swipe-item>
-            <a href="javascript:;" class="swiper-item" v-for="(item, index) in swiperList" :key="index" v-if="index < 15">
-              <p class="img-box"><img :src="item.imgUrl" alt=""></p>
-              <span class="item-name">{{item.name}}</span>
+            <a v-show="index < 15" href="javascript:;" class="swiper-item" v-for="(item, index) in swiperList" :key="index">
+              <p class="img-box"><img :src="item.img" alt=""></p>
+              <span class="item-name">{{item.bname}}</span>
             </a>
           </mt-swipe-item>
-          <mt-swipe-item>
-            <a href="javascript:;" class="swiper-item" v-for="(item, index) in swiperList" :key="index" v-if="index >= 15">
-              <p class="img-box"><img :src="item.imgUrl" alt=""></p>
-              <span class="item-name">{{item.name}}</span>
+          <!-- <mt-swipe-item>
+            <a href="javascript:;" class="swiper-item" v-for="(item, index) in swiperList" :key="index" else="index >= 15">
+              <p class="img-box"><img :src="item.img" alt=""></p>
+              <span class="item-name">{{item.bname}}</span>
             </a>
-          </mt-swipe-item>
+          </mt-swipe-item> -->
         </mt-swipe>
       </article>
       <!-- 精彩推荐 -->
@@ -42,22 +48,21 @@
         </div>
         <div class="activity">
           <ul class="activity-list">
-            <li class="activity-item">
-              <p class="taocan">品质套餐</p>
-              <p class="dapei">搭配齐全</p>
+            <li class="activity-item" v-for="(v, k) in activity" :key="k">
+              <p class="taocan">{{v.aname}}</p>
+              <p class="dapei">{{v.intro}}</p>
               <p class="qianggou">立即抢购</p>
-              <p class="taocan-img"><img src="https://fuss10.elemecdn.com/d/d4/16ff085900d62b8d60fa7e9c6b65dpng.png?imageMogr/format/webp/thumbnail/!240x160r/gravity/Center/crop/240x160/" alt=""></p>
-            </li>
-            <li class="activity-item">
-              <p class="taocan">限量抢购</p>
-              <p class="dapei">超值美味</p>
-              <p class="qianggou">
-                <span style="color: red;">906</span>人正在抢></p>
-              <p class="taocan-img"><img src="https://fuss10.elemecdn.com/b/e1/0fa0ed514c093a7138b0b9a50d61fpng.png?imageMogr/format/webp/thumbnail/!240x160r/gravity/Center/crop/240x160/" alt=""></p>
+              <p class="taocan-img"><img :src="v.img" alt=""></p>
             </li>
           </ul>
         </div>
       </div>
+      <!-- 轮播图 -->
+      <mt-swipe :auto="3000" style="height: 150px">
+        <mt-swipe-item v-for="(v, k) in advertising" :key="k">
+          <img :src="v.img" alt="">
+        </mt-swipe-item>
+      </mt-swipe>
       <!-- 推荐商家 -->
       <div class="merchant-box">
         <div class="title">一 推荐商家 一</div>
@@ -84,24 +89,14 @@
         </div>
         <div class="merchants">
           <ul class="merchant-list" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="50">
-            <!-- <li class="merchant-item" v-for="item in onLine" :key="item.id" @click="goDetail(item)">
-              <div class="merchant-item-logo"><img :src="item.img" alt=""></div>
-              <div class="merchant-item-info">
-                <p class="shop-name">{{item.title}}</p>
-                <p class="market">月售4000单</p>
-                <p class="cost">￥{{item.start_price}}起送 | 运费￥{{item.distribution_price}}</p>
-                <p class="shop-special">满25减10，满49减24</p>
-                <p class="discount">折 </p>
-              </div>
-            </li> -->
             <li class="merchant-item" v-for="item in shopList" :key="item.id" @click="goDetail(item)">
               <div class="merchant-item-logo"><img :src="item.logo" alt=""></div>
               <div class="merchant-item-info">
-                <p class="shop-name">{{item.shopName}}</p>
-                <p class="market"><span style="color:#FFD902;">{{item.star}}</span> 月售{{item.salesVolume}}单</p>
-                <p class="cost">￥20起送 | 运费￥2</p>
+                <p class="shop-name">{{item.mname}}</p>
+                <p class="market"><span style="color:#FFD902;"><span>☆☆☆☆☆</span> {{item.score}}</span> 月售{{item.sales}}单</p>
+                <p class="cost">￥{{item.startPrice}}起送 | 运费￥{{item.distributionPrice}} <span style="float: right">{{item.DISTANCE}} | {{item.needTime}}</span> </p>
                 <P class="shop-type">{{item.type}}</P>
-                <p class="shop-special">满25减10，满49减24</p>
+                <p class="shop-special">满{{item.meetAmount}}减{{item.discounts}}</p>
                 <p class="discount">折 </p>
               </div>
             </li>
@@ -118,7 +113,6 @@
 <script>
 import Vue from 'vue'
 import http from '../../js/api.js'
-// import axios from 'axios'
 
 import { Swipe, SwipeItem, InfiniteScroll } from 'mint-ui'
 const Mock = require('mockjs')
@@ -135,17 +129,20 @@ export default {
       shopList: [],
       isFixed: false,
       loading: false,
-      onLine: []
+      onLine: [],
+      activity: [],
+      advertising: []
     }
   },
   components: {
     Cart
   },
   mounted () {
+    this.getActivity()
+    this.getShopList()
+    this.getAdvertising()
     this.$nextTick(function () {
       this.getSwiperList()
-      this.getLocation()
-      this.getShopList()
       this.scrollFn()
       var res = Mock.mock({
         'sales|1-100': 100
@@ -155,11 +152,20 @@ export default {
   },
   methods: {
     getSwiperList () {
-      http.get('/api/swiperList').then(res => {
+      http.get('/banner/list').then(res => {
         let data = res.data
-        if (data.msg === 'success') {
-          this.swiperList = data.data
-        }
+        this.swiperList = data
+      })
+    },
+    getActivity() {
+      http.get('/activity').then( res => {
+        this.activity = res.data.data
+      })
+    },
+    getAdvertising() {
+      this.axios.get('/advertising').then(res => {
+        console.log(res.data);
+        this.advertising = res.data.data
       })
     },
     getLocation () {
@@ -191,9 +197,9 @@ export default {
       myCity.get(myFun)
     },
     getShopList () {
-      http.get('/api/shopList').then(res => {
-        this.shopList = res.data.data
-        console.log(res.data.data)
+      http.get('/merchant/list').then(res => {
+        this.shopList = res.data
+        console.log(res.data)
       })
     },
     scrollFn () {
@@ -224,7 +230,7 @@ export default {
     },
     goDetail (item) {
       this.$store.state.item = item
-      this.$router.push({ path: '/detail', query: { id: item.id } })
+      this.$router.push({ path: '/detail', query: { id: item.MID } })
     }
   }
 }

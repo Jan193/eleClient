@@ -4,7 +4,9 @@
 }
 .detail-hd {
     height: 2rem;
-    background-color: #c4bdcc;
+    /* background-color: #c4bdcc; */
+    background-repeat: no-repeat;
+    background-size: 100%;
 }
  .tabbar {
    background-color: #fff;
@@ -123,14 +125,15 @@
 </style>
 <template>
   <div class='detail'>
-    <header class="detail-hd">
+    <header class="detail-hd" :style="'background-image: url('+ merchantDetail.headImg + ')'">
       <!-- <i class="iconfont icon-back icon-back__style"></i> -->
       <Back/>
     </header>
     <article style="position: relative;">
-      <p class="shopping-logo"><img src="https://fuss10.elemecdn.com/b/f6/331693959088eb5220c9adf95d10ejpeg.jpeg?imageMogr/format/webp/thumbnail/150x/" alt=""></p>
-      <h3 style="text-align:center; padding-top: .3rem;">{{Item.shopName}}</h3>
-      <p style="font-size: .3rem; text-align:center;">{{Item.special}}</p>
+      <p class="shopping-logo"><img :src="merchantDetail.logo" alt=""></p>
+      <h3 style="text-align:center; padding-top: .3rem;">{{merchantDetail.mname}}</h3>
+      <!-- <p style="font-size: .3rem; text-align:center;">{{Item.special}}</p> -->
+      <p style="text-align: center;"> 评价 {{merchantDetail.score}} 月售{{merchantDetail.sales}}</p>
     </article>
     <section>
       <div class="tabbar" ref="tabbar" :class="tabbarFixed ? 'tabbar-fixed' : ''">
@@ -145,8 +148,8 @@
       </div>
       <div v-show="currentStatus === 'order'">
         <div class="good-box" :class="goodBoxFixed ? 'good-box-fixed' : ''">
-          <good-type :isFixed="goodBoxFixed"></good-type>
-          <good-list :isFixed="goodBoxFixed"></good-list>
+          <good-type :isFixed="goodBoxFixed" :goodsTypeList="goodsTypeList"></good-type>
+          <good-list :isFixed="goodBoxFixed" :goodsList="goodsList"></good-list>
         </div>
         <shopping-cart/>
       </div>
@@ -171,7 +174,10 @@ export default {
         { name: '点餐', status: 'order' },
         { name: '评价', status: 'evaluate' },
         { name: '商家', status: 'business' }
-      ]
+      ],
+      merchantDetail: {},
+      goodsTypeList: [],
+      goodsList: []
     }
   },
   computed: {
@@ -181,6 +187,11 @@ export default {
   },
   components: {
     GoodType, GoodList, ShoppingCart
+  },
+  created () {
+    this.getGoodsType()
+    this.getMerchantDetail()
+    this.getGoodsList(1)
   },
   mounted () {
     this.$nextTick(function () {
@@ -205,6 +216,45 @@ export default {
     },
     toggleStatus (item) {
       this.currentStatus = item.status
+    },
+    /**
+     * @description: 获取商家详情
+     * @param {type} 
+     * @return: 
+     */
+    getMerchantDetail() {
+      const id = this.$route.query.id
+      this.axios.get('/merchant/detail', {
+        params: {
+          id
+        }
+      }).then(res => {
+        this.merchantDetail = res.data.data
+      })
+    },
+    /**
+     * @description: 获取商品类型
+     * @param {type} 
+     */  
+    getGoodsType(){
+      const merchantId = this.$route.query.id
+      this.axios.get('/merchant/goods/type', {
+        params: {
+          merchantId
+        }
+      }).then( res => {
+        this.goodsTypeList = res.data
+      })
+    },
+    getGoodsList(typeId) {
+      this.axios.get('/merchant/goods/list', {
+        params: {
+          goodsTypeId: typeId
+        }
+      }).then(res => {
+        console.log(res.data);
+        this.goodsList = res.data
+      })
     }
   }
 }
