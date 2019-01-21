@@ -5,7 +5,9 @@ Vue.use(Vuex)
 let state = {
   test: '骨架屏',
   goodType: [],
-  buyGoods: {}
+  buyGoods: {},
+  goodsList: [],
+  merchantDetail: {}
 }
 export default new Vuex.Store({
   state: state,
@@ -33,10 +35,15 @@ export default new Vuex.Store({
       state.goodType = paylod
     },
     addBuyList (state, paylod) {
-      Vue.set(state.buyGoods, paylod.id, paylod)
+      Vue.set(state.buyGoods, paylod.iid, paylod)
+      state.goodsList.forEach(item => {
+        if (item.iid === paylod.iid) {
+          item.count = paylod.count
+        }
+      })
     },
     reduceBuyList (state, payload) {
-      Vue.set(state.buyGoods, payload.id, payload)
+      Vue.set(state.buyGoods, payload.iid, payload)
     }
   },
   actions: {

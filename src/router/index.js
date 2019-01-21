@@ -27,14 +27,14 @@ export default new Router({
       children: [
         {
           path: '/home',
-          name: 'home',
+          name: '首页',
           component: Home,
           meta: { index: 0 }
         },
         {
           path: '/discover',
           name: '发现',
-          component: import('@/page/discover/discover'),
+          component: () => import('@/page/discover/discover'),
           meta: { index: 1 }
         },
         { path: '/order', name: '订单', component: () => import(/* webpackChunkName: "order" */ '@/page/order/order'), meta: { index: 2 } },
@@ -50,8 +50,20 @@ export default new Router({
     {
       path: '/preOrder',
       name: '确认下单',
-      // component: PreOrder
+      meta: {
+        isToken: true
+      },
       component: () => import(/* webpackChunkName: "preOrder" */ '@/page/home/subPage/preOrder/preOrder')
+    },
+    {
+      path: '/login',
+      name: '登录',
+      component: () => import(/* webpackChunkName: 'login' */ '@/page/login')
+    },
+    {
+      path: '/orderSuccess',
+      name: '下单成功',
+      component: () => import('@/page/home/subPage/orderSuccess.vue')
     }
   ]
 })

@@ -230,6 +230,8 @@ export default {
         }
       }).then(res => {
         this.merchantDetail = res.data.data
+        this.$store.state.merchantDetail = this.merchantDetail
+        document.title = this.merchantDetail.mname;
       })
     },
     /**
@@ -252,8 +254,8 @@ export default {
           goodsTypeId: typeId
         }
       }).then(res => {
-        console.log(res.data);
         this.goodsList = res.data
+        this.$store.state.goodsList = this.goodsList
       })
     }
   }

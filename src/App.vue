@@ -1,5 +1,6 @@
 <style>
 @import "./css/base.css";
+@import"./css/style.css";
 @import "mint-ui/lib/style.css";
 @import "./assets/font/iconfont.css";
 :root {

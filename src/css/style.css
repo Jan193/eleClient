@@ -1,0 +1,17 @@
+.textRight {
+    text-align: right;
+}
+
+.fontSize12 {
+    font-size: .24rem;
+}
+.fontSize14 {
+    font-size: .28rem;
+}
+.fontSize16 {
+    font-size: .32rem;
+}
+
+.colorRed {
+    color: #F07373;
+}

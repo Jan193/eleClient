@@ -3,7 +3,7 @@
         <img src="./cart.png" alt="购物车">
     </div>
 </template>
-<style scope>
+<style scoped>
     .cart {
         position: fixed;
         right: .1rem;

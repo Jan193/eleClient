@@ -1,7 +1,4 @@
-/*
-    我的
-*/
-<style>
+<style lang="less">
 .person {
     font-size: 0.32rem;
     background-color: #f5f5f5;
@@ -17,6 +14,11 @@
   height: 1.2rem;
   border-radius: 50%;
   background-color: #eee;
+  overflow: hidden;
+  img {
+    width: 100%;
+    height: 100%;
+  }
 }
 .user-info {
   flex: 1;
@@ -63,11 +65,11 @@
 <template>
   <div class="person">
     <Head Title="我的"/>
-    <div class="top-login flex">
-      <div class="user-head"></div>
+    <div class="top-login flex" @click="login">
+      <div class="user-head"><img src="../../../static/img/moren.jpg" alt=""></div>
       <div class="user-info">
-        <p class="user-name">登录/注册</p>
-        <p class="user-tel">登录后享受更多特权</p>
+        <p class="user-name">{{userName ? userName : '登录/注册'}}</p>
+        <p class="user-tel">{{userName ? '' : '登录后享受更多特权'}}</p>
       </div>
     </div>
     <div class="flex nav">
@@ -116,12 +118,40 @@
 </template>
 <script>
 import Head from '../components/Header.vue'
+import { MessageBox } from 'mint-ui';
+
 export default {
   data () {
-    return {}
+    return {
+      userName: ''
+    }
   },
   components: {
     Head
+  },
+  created() {
+    let userInfo = window.sessionStorage.getItem('userInfo')
+    if (userInfo) {
+      userInfo = JSON.parse(userInfo)
+      this.userName = userInfo.userName
+    }
+  },
+  methods: {
+    login() {
+      if (this.userName) {
+        MessageBox({
+          title: '提示',
+          message: '确定要退出登录?',
+          showCancelButton: true
+        }).then(action => {
+          if (action === 'confirm') {
+            this.$router.push('/')
+          }
+        })
+      } else {
+        this.$router.push('/login')
+      }
+    },
   }
 }
 </script>

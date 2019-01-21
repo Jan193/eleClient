@@ -50,6 +50,7 @@
 
 <script>
 import Head from '../components/Header'
+
 export default {
   data () {
     return {}

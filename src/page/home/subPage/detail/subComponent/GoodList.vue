@@ -20,8 +20,8 @@
         <div class="good-item-img"><img :src="item.img" alt=""></div>
         <div class="good-item-info">
           <p class="good-name">{{item.iname}}</p>
-          <p class="food-material">【5个一份】食材：小麦粉,猪肉</p>
-          <p class="good-market">月售1879份</p>
+          <!-- <p class="food-material">【5个一份】食材：小麦粉,猪肉</p> -->
+          <p class="good-market">月售{{item.sales}}份</p>
           <p class="good-price">￥{{item.price}}</p>
           <div class="good-buy">
             <span class="good-reduce cicle" v-show="item.count > 0" @click="reduce(item)">-</span>
@@ -41,10 +41,10 @@ export default {
     isFixed: {
       type: Boolean
     },
-    goodsList: {
+    /* goodsList: {
       type: Array,
       default: []
-    }
+    } */
   },
   data () {
     return {
@@ -55,13 +55,33 @@ export default {
       justOne: false
     }
   },
-  components: {
-  },
   computed: {
+    /**
+     * @description: 一个商品所点的数量
+     * @param {type} 
+     * @return: 
+     */
+    itemTotalCount() {
+
+    },
+    goodsList() {
+      console.log(this.$store.state.goodsList);
+      return this.$store.state.goodsList
+    },
   },
   mounted () {
-    this.$nextTick(function () {
-    })
+    let buyGoods = this.$store.state.buyGoods
+    console.log(buyGoods);
+    if (buyGoods) {
+      for (let key in buyGoods) {
+        this.goodsList.forEach( item => {
+          if (item.iid === Number(key)) {
+            item.count = buyGoods[key].count
+            console.log('有一个??');
+          }
+        })
+      }
+    }
   },
   methods: {
     add (item) {

@@ -58,7 +58,7 @@
         </div>
       </div>
       <!-- 轮播图 -->
-      <mt-swipe :auto="3000" style="height: 150px">
+      <mt-swipe :auto="3000" style="height: 130px">
         <mt-swipe-item v-for="(v, k) in advertising" :key="k">
           <img :src="v.img" alt="">
         </mt-swipe-item>
